@@ -1,0 +1,65 @@
+<!DOCTYPE html> {% extends 'company_base.html' %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    {% block content %}
+
+    <style>
+        th {
+            font-size: 16px;
+            padding: 3px 10px 8px 0px;
+        }
+
+        td {
+            0px 8px 3px 2px;
+        }
+
+        body {
+            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+          textarea{
+            width: 219px;
+            height: 85px;
+        }
+    </style>
+
+    <center>
+
+        {% if messages %} {% for msg in messages %} {%if msg%}
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: '{{msg.message}}',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+        {%endif%} {% endfor %} {% endif %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title" style="font-size:25px">Add About Us </h3>
+            </div>
+            <form role="form" method="post" action="{% url 'create_aboutus' %}" enctype="multipart/form-data">
+                <div class="box-body">
+                    <table>
+                        {% csrf_token %} {{form.as_table}}
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <input type="submit" class="btn btn-primary" >
+                    <button type="reset" class="btn btn-primary">Reset</button>
+                </div>
+            </form>
+        </div>
+    </center>
+    {% endblock %}
+</body>
+
+</html>

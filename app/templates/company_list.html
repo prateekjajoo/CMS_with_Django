@@ -1,0 +1,99 @@
+<!DOCTYPE html> {% extends 'base.html' %} {% block content %}
+
+
+<h2 class="page-header">List of Company</h2>
+    <center>
+        {%if not company_list %}
+        <div class="alert alert-danger" role="alert" style="width: 500px;">
+            Sorry! no records found
+        </div>
+        {%endif%} {% if messages %} {% for msg in messages %} {%if msg%}
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: '{{msg.message}}',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+        {%endif%} {% endfor %} {% endif %}
+
+    </center>
+
+    <script>
+        function myDelete(id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+
+                    if (id != null) {
+
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+
+                        var url = "{% url 'delete_company' 123 %}";
+                        var id_ = id;
+
+                        // // Construct the full URL with "id"
+                        document.location.href = url.replace('123', id_);
+
+                    }
+                }
+            })
+
+        }
+    </script>
+
+    <div class="row">
+        {% for company in company_list %}
+        <div class="col-md-4">
+            <!-- Widget: user widget style 1 -->
+            <div class="box box-widget widget-user-2">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+
+                    <div class="widget-user-header bg-yellow">
+
+                    <a href="{% url 'update_company' company.id %}">
+                        <i class="fa fa-pencil-square-o" style="font-size: 20px; float: right; color: #3c8dbc; margin: -16px 9px;"></i></a>
+
+                    <i class="fa fa-trash-o" aria-hidden="true" onclick="myDelete({{company.id}})" style="color: black;font-size: 19px;float: right; margin: -16px -12px;"></i>
+                    <div class="widget-user-image">
+                        <img class="img-circle" src="media/{{company.company_logo}}" alt="{{company.title}} Avatar">
+                    </div>
+                    <!-- /.widget-user-image -->
+
+                    <h3 class="widget-user-username">{{company.title}}</h3>
+                    <h5 class="widget-user-desc">{{company.name}}</h5>
+                        <a href="{% url 'web_index' company.key company.id %}" style="float: right; margin: -12px; color: black;">Vist Site</a>
+                    </div>
+
+                <div class="box-footer no-padding">
+                    <ul class="nav nav-stacked">
+                        <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                        <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
+                        <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
+                        <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <!-- /.widget-user -->
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

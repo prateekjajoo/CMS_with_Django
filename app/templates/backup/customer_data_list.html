@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {% block content %}
+  <script>
+        function myDelete(id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+
+                    if (id != null) {
+
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+
+                        var url = "{% url 'delete_customer' 123 %}";
+                        var id_ = id;
+
+                        // // Construct the full URL with "id"
+                        document.location.href = url.replace('123', id_);
+
+                    }
+                }
+            })
+
+        }
+    </script>
+
+        {% if messages %} {% for msg in messages %} {%if msg%}
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: '{{msg.message}}',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+        {%endif%} {% endfor %} {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12">
+          <!-- /.box -->
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Data Table With Full Features</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Company</th>
+                  <th>Email</th>
+                  <th>Designation</th>
+                  <th>Gender</th>
+                  <th>Creation Date</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for customer in customer_list %}
+                    <tr>
+                        <td>{{customer.id}}</td>
+                        <td>{{customer.first_name}} {{customer.last_name}}</td>
+                        <td>{{customer.company}}</td>
+                        <td>{{customer.email}}</td>
+                        <td>{{customer.designation}}</td>
+                        <td>{{customer.gender}}</td>
+                        <td>{{customer.creation_date}}</td>
+                        <td>
+                            <a href="{% url 'update_customer' customer.id %}">
+                                <i class="fa fa-pencil-square-o"></i></a>
+                        </td>
+                        <td><i class="fa fa-trash-o" onclick="myDelete({{customer.id}})" aria-hidden="true"></i></td>
+
+                    </tr>
+                    {%endfor%}
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Company</th>
+                  <th>Email</th>
+                  <th>Designation</th>
+                  <th>Gender</th>
+                  <th>Creation Date</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+{% endblock %}
